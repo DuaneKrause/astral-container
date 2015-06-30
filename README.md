@@ -146,19 +146,17 @@ You can provide a lambda or other factory function to explicity let Astral know 
 
 ```java
 AstralContainer container = new AstralContainer();
-AuthInfo authinfo = getSecureToken();
-container.register(SqlConnection.class, (AstralContainer c) -> new SqlConnection(authInfo));
+container.register(DbConnection.class, (AstralContainer c) -> new SqlConnection(CONNECTION_STRING));
 ```
 
-The `new SqlConnection(authInfo)` will get executed whenever a `SqlConnection` is created, but not during registration.
+The `new SqlConnection(authInfo)` will get executed whenever a `DbConnection` is created, but not during registration.
 
 The `AstralContainer` is passed into the factory function so you can still call resolve for some constructor parameters.  For example:
 
 ```java
 AstralContainer container = new AstralContainer();
-AuthInfo authinfo = getSecureToken();
-container.register(SqlConnectionPool.class, (AstralContainer c) -> new SqlConnectionPool(MAX_CONNECTIONS));
-container.register(SqlConnection.class, (AstralContainer c) -> new SqlConnection(authInfo, c.resolve(SqlConnectionPool.class));
+container.registerSingletonInstance(ConnectionPool.class, new SqlConnectionPool(MAX_CONNECTIONS));
+container.register(DbConnection.class, (AstralContainer c) -> new SqlConnection(CONNECTION_STRING, c.resolve(ConnectionPool.class));
 ```
 
 ## Feedback Welcome
