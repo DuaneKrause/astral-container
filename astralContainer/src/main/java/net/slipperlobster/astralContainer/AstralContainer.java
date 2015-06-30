@@ -8,7 +8,6 @@ package net.slipperlobster.astralContainer;
 
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.function.Function;
 
 public class AstralContainer
 {
