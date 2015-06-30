@@ -14,7 +14,7 @@ Using dependency injection automates the creation of objects in your application
 We don't really, but I wanted to build this anyway :).  I had trouble using Google's Guice in a practical manner (you can't put attributes on classes you don't own), and Spring is a complete framework that includes many things you may not want.  I really liked using the Unity library in C#, and wanted to do the same thing in Java.  In particular, I like configuring object dependencies in **code**, rather than in xml, since it can be syntax-checked and tested easily.
 
 ## How do I use the Astral Container?
-Besides including the library in your application, you need to perform 3 distinct steps in your application:
+Besides including the library in your application, you should perform these 3 distinct steps in your application:
 
 * Registration
 * Validation
@@ -66,7 +66,7 @@ It's possible to go through all the registration, and call validate without crea
 Unlike other libraries I have used, Astral will include in the exception messgae the actual path of the circular reference.  This exception will also be thrown while resolving (in case you ignored the validate exception or didn't validate).
 
 ```
-Caught expected exception net.slipperlobster.astralContainer.AstralException: Circular reference detected for type:
+net.slipperlobster.astralContainer.AstralException: Circular reference detected for type:
  net.slipperlobster.astralContainer.Ghosts$BackReferenceComposedImpl referencing: net.slipperlobster.astralContainer.Ghosts$IBase through from path:
  net.slipperlobster.astralContainer.Ghosts$IBase -> net.slipperlobster.astralContainer.Ghosts$SingleComposedImpl ->
  net.slipperlobster.astralContainer.Ghosts$BaseRaw -> net.slipperlobster.astralContainer.Ghosts$BackReferenceComposedImpl ->
@@ -142,7 +142,7 @@ MyInterface mine = container.resolve(MyInterface.class);
 ```
 
 ### Constructor Injection
-You can provide a lambda or other factory function to explicity let Astral how to call the constructor.  This is useful in providing fixed arguments to third-party classes that you have to create.
+You can provide a lambda or other factory function to explicity let Astral know how to call the constructor.  This is useful in providing fixed arguments to third-party classes.
 
 ```java
 AstralContainer container = new AstralContainer();
@@ -152,7 +152,7 @@ container.register(SqlConnection.class, (AstralContainer c) -> new SqlConnection
 
 The `new SqlConnection(authInfo)` will get executed whenever a `SqlConnection` is created, but not during registration.
 
-The `AstralContainer` is passed into the factory function so you can still call resolve for some functions.  For example:
+The `AstralContainer` is passed into the factory function so you can still call resolve for some constructor parameters.  For example:
 
 ```java
 AstralContainer container = new AstralContainer();
